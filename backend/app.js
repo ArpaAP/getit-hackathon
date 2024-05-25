@@ -16,6 +16,9 @@ module.exports = { app };
 const kakaoController = require("./api/kakao/kakaoController");
 app.use("/kakao", kakaoController);
 
+const placeController = require("./api/places/placeController");
+app.use("/places", placeController);
+
 app.listen(HTTP_PORT, HOST, () => {
   console.log(`Server is running at http://${HOST}:${HTTP_PORT}`);
 });
