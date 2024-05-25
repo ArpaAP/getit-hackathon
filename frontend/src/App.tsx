@@ -4,12 +4,7 @@ import axios from 'axios'
 import urlJoin from 'url-join'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { LocalKeywordResponse } from './types/kakaoapi'
-import {
-  TbCategory,
-  TbNavigation,
-  TbSearch,
-  TbTrendingUp,
-} from 'react-icons/tb'
+import { TbLocation, TbSearch, TbTrendingUp } from 'react-icons/tb'
 import KeywordSearch from './components/KeywordSearch'
 import PlaceDetail from './components/PlaceDetail'
 
@@ -167,6 +162,7 @@ function App() {
 
           kakao.maps.event.addListener(marker, 'click', () => {
             setSelectedPlace(doc as any)
+            window.map.panTo(new window.kakao.maps.LatLng(doc.y, doc.x))
           })
 
           markers.current.push(marker)
@@ -205,57 +201,58 @@ function App() {
         className="grid grid-cols-12 grow"
         style={{ height: 'calc(100vh - 57px)' }}
       >
-        <div
-          className="col-span-3 flex border-r bg-gray-100/50 border-gray-200"
-          style={{ height: 'calc(100vh - 57px)' }}
-        >
-          <div className="shrink-0 flex flex-col w-14 text-sm tracking-tighter border-r border-gray-200">
-            <button
-              type="button"
-              className="bg-indigo-100 aspect-square border-b border-gray-200 flex flex-col items-center justify-center p-1"
-            >
-              <TbSearch className="text-xl" />
-              검색
-            </button>
-            <button
-              type="button"
-              className="aspect-square border-b border-gray-200 flex flex-col items-center justify-center p-1"
-            >
-              <TbTrendingUp className="text-xl" />
-              트렌딩
-            </button>
-            <button
-              type="button"
-              className="aspect-square border-b border-gray-200 flex flex-col items-center justify-center p-1"
-            >
-              <TbNavigation className="text-xl" />
-              길찾기
-            </button>
-          </div>
+        <div className="relative col-span-3">
+          <div
+            className="flex absolute inset-0 z-[99999] border-r bg-gray-50 border-gray-200"
+            style={{ height: 'calc(100vh - 57px)' }}
+          >
+            <div className="shrink-0 flex flex-col w-14 text-sm tracking-tighter border-r border-gray-200">
+              <button
+                type="button"
+                className="bg-indigo-100 aspect-square border-b border-gray-200 flex flex-col items-center justify-center p-1"
+              >
+                <TbSearch className="text-xl" />
+                검색
+              </button>
+              <button
+                type="button"
+                className="aspect-square border-b border-gray-200 flex flex-col items-center justify-center p-1"
+              >
+                <TbTrendingUp className="text-xl" />
+                트렌딩
+              </button>
+              <button
+                type="button"
+                className="aspect-square border-b border-gray-200 flex flex-col items-center justify-center p-1"
+              >
+                <TbLocation className="text-xl" />
+                길찾기
+              </button>
+            </div>
 
-          <div className="flex w-full h-full">
-            <KeywordSearch
-              places={places}
-              docs={docs}
-              onSelectedItem={(doc) => {
-                setSelectedPlace(doc as any)
+            <div className="flex w-full h-full">
+              <KeywordSearch
+                places={places}
+                docs={docs}
+                onSelectedItem={(doc) => {
+                  setSelectedPlace(doc as any)
 
-                console.log(selectedPlace)
-              }}
-            />
+                  console.log(selectedPlace)
+                }}
+              />
+            </div>
           </div>
         </div>
         <div className="col-span-9 h-full relative">
           <div id="map" className="w-full h-full" />
 
-          {selectedPlace && (
-            <PlaceDetail
-              place={selectedPlace}
-              onClose={() => {
-                setSelectedPlace(null)
-              }}
-            />
-          )}
+          <PlaceDetail
+            show={selectedPlace !== null}
+            place={selectedPlace as any}
+            onClose={() => {
+              setSelectedPlace(null)
+            }}
+          />
         </div>
       </div>
     </>

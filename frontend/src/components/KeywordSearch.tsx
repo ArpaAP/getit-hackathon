@@ -173,7 +173,7 @@ export default function KeywordSearch({
               key={doc.id}
               className="text-left bg-white border border-gray-200 rounded-lg px-4 py-3"
               onClick={() => {
-                window.map.setCenter(new window.kakao.maps.LatLng(doc.y, doc.x))
+                window.map.panTo(new window.kakao.maps.LatLng(doc.y, doc.x))
                 onSelectedItem(doc)
               }}
             >

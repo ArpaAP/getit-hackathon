@@ -29,7 +29,7 @@ print(lng_arr)
 
 count = 0
 
-with tqdm(total=len(lat_arr) * len(lng_arr), desc='process') as pbar:
+with tqdm(total=len(lat_arr) * len(lng_arr), desc='식당 데이터 수집') as pbar:
     for lat in lat_arr:
         for dlng in lng_arr:
             page = 1
